@@ -30,5 +30,6 @@ export default {
       }
     }
   },
-  plugins: []
+  plugins: [],
+  presets: [require('@nuxt/ui/tailwind')]
 } satisfies Config 
