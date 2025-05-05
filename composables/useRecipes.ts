@@ -23,9 +23,9 @@ interface ApiResponse {
 
 const mapDifficulty = (difficulty: string): Difficulty => {
   const difficultyMap: Record<string, Difficulty> = {
-    'easy': 'ľahké' as Difficulty,
-    'medium': 'stredné' as Difficulty,
-    'hard': 'ťažké' as Difficulty
+    'easy': 'easy' as Difficulty,
+    'medium': 'medium' as Difficulty,
+    'hard': 'hard' as Difficulty
   }
   return difficultyMap[difficulty.toLowerCase()] || 'medium' as Difficulty
 }

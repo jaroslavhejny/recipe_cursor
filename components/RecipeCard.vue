@@ -32,15 +32,15 @@
 
       <dl class="space-y-4">
         <div>
-          <dt class="font-medium text-gray-700">Description</dt>
+          <dt class="font-medium text-gray-700">Popis</dt>
           <dd class="mt-1 text-gray-600">{{ recipe.description }}</dd>
         </div>
         <div>
-          <dt class="font-medium text-gray-700">Cooking Time</dt>
-          <dd class="mt-1 text-gray-600">{{ recipe.cookingTime }} minutes</dd>
+          <dt class="font-medium text-gray-700">Čas prípravy</dt>
+          <dd class="mt-1 text-gray-600">{{ recipe.cookingTime }} minút</dd>
         </div>
         <div>
-          <dt class="font-medium text-gray-700">Servings</dt>
+          <dt class="font-medium text-gray-700">Porcie</dt>
           <dd class="mt-1 text-gray-600">{{ recipe.servings }}</dd>
         </div>
       </dl>
@@ -48,7 +48,7 @@
       <div class="flex justify-end mt-4">
         <NuxtLink :to="`/recipe/${recipe.id}`" 
            class="inline-flex items-center px-4 py-2 text-primary-600 hover:text-primary-800 gap-2">
-          View Recipe
+          Zobraziť recept
           <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>

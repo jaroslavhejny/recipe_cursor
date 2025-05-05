@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4">
     <div class="py-8">
       <div class="mb-8">
-        <h1 class="text-3xl font-bold">{{ recipe?.title || 'Recipe Details' }}</h1>
+        <h1 class="text-3xl font-bold">{{ recipe?.title || 'Detail receptu' }}</h1>
         <p class="text-gray-600">{{ recipe?.description }}</p>
       </div>
 
@@ -35,14 +35,14 @@
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                {{ recipe.servings }} servings
+                {{ recipe.servings }} porcií
               </span>
             </div>
           </div>
 
           <div class="space-y-6">
             <div class="bg-white rounded-lg shadow-sm p-6">
-              <h3 class="text-xl font-semibold mb-4">Ingredients</h3>
+              <h3 class="text-xl font-semibold mb-4">Ingrediencie</h3>
               <ul class="space-y-3">
                 <li v-for="ingredient in recipe.ingredients" 
                     :key="ingredient.name"
@@ -56,7 +56,7 @@
             </div>
 
             <div class="bg-white rounded-lg shadow-sm p-6">
-              <h3 class="text-xl font-semibold mb-4">Instructions</h3>
+              <h3 class="text-xl font-semibold mb-4">Postup</h3>
               <ol class="list-decimal list-inside space-y-3">
                 <li v-for="(instruction, index) in recipe.instructions"
                     :key="index"
@@ -73,15 +73,15 @@
               <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Recipes
+              Späť na recepty
             </a>
           </div>
         </div>
 
         <div v-else class="bg-white rounded-lg shadow-md p-6">
           <div class="mb-6">
-            <h2 class="text-2xl font-bold">Recipe Not Found</h2>
-            <p class="text-gray-600">The recipe you're looking for doesn't exist</p>
+            <h2 class="text-2xl font-bold">Recept sa nenašiel</h2>
+            <p class="text-gray-600">Hľadaný recept neexistuje</p>
           </div>
           <div class="flex justify-end">
             <a href="/" 
@@ -89,7 +89,7 @@
               <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Recipes
+              Späť na recepty
             </a>
           </div>
         </div>
