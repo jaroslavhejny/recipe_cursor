@@ -1,12 +1,17 @@
 <template>
   <div class="w-full">
     <div class="relative w-full" ref="sliderContainer">
+      <!-- Current value display -->
+      <div class="text-center mb-6">
+        <span class="text-lg font-medium text-blue-600">{{ modelValue }}</span>
+      </div>
+
       <!-- Track -->
-      <div class="absolute w-full h-2 bg-gray-200 rounded-full top-1/2 -translate-y-1/2"></div>
+      <div class="absolute w-full h-2 bg-gray-200 rounded-full top-1/2 -translate-y-1/2 z-10"></div>
       
       <!-- Active track -->
       <div 
-        class="absolute h-2 bg-blue-500 rounded-full top-1/2 -translate-y-1/2 transition-all duration-100"
+        class="absolute h-2 bg-blue-500 rounded-full top-1/2 -translate-y-1/2 transition-all duration-200 z-10"
         :style="{
           width: `${((modelValue - min) / (max - min)) * 100}%`
         }"
@@ -20,27 +25,28 @@
         :step="step"
         :value="modelValue"
         @input="updateValue"
-        class="absolute w-full h-2 appearance-none bg-transparent pointer-events-none"
+        class="absolute w-full h-2 appearance-none bg-transparent pointer-events-none z-20"
       >
       <div 
-        class="absolute w-5 h-5 bg-white border-2 border-blue-500 rounded-full top-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-transform shadow-md"
-        :class="{ 'ring-2 ring-blue-300 scale-110': isDragging }"
-        :style="{ left: `${((modelValue - min) / (max - min)) * 100}%` }"
+        class="absolute w-6 h-6 bg-white border-2 border-blue-500 rounded-full top-1/2 -translate-y-1/2 cursor-pointer hover:scale-110 transition-all duration-200 shadow-lg hover:shadow-xl z-30"
+        :class="{ 'ring-4 ring-blue-200 scale-110': isDragging }"
+        :style="{ left: `${((modelValue - min) / (max - min)) * 100}%`, transform: `translate(-50%, 0)` }"
         @mousedown="startDragging($event)"
         @touchstart="startDragging($event)"
       >
         <div 
           v-if="isDragging"
-          class="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
+          class="absolute -top-10 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap"
         >
           {{ modelValue }}
+          <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-blue-600 rotate-45"></div>
         </div>
       </div>
 
       <!-- Labels -->
-      <div class="flex justify-between mt-6">
-        <span class="text-sm text-gray-600">{{ min }}</span>
-        <span class="text-sm text-gray-600">{{ max }}</span>
+      <div class="flex justify-between mt-4">
+        <span class="text-sm font-medium text-gray-700 z-20">{{ min }}</span>
+        <span class="text-sm font-medium text-gray-700 z-20">{{ max }}</span>
       </div>
     </div>
   </div>

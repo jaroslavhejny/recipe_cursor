@@ -4,12 +4,14 @@ import type { Recipe, Ingredient } from '~/types/recipe'
 interface RecipesState {
   recipes: Recipe[]
   totalRecipes: number
+  lastFetchTime: number | null
 }
 
 export const useRecipesStore = defineStore('recipes', {
   state: (): RecipesState => ({
     recipes: [],
-    totalRecipes: 0
+    totalRecipes: 0,
+    lastFetchTime: null
   }),
 
   getters: {
@@ -22,7 +24,13 @@ export const useRecipesStore = defineStore('recipes', {
     },
     getTotalRecipes: (state) => state.totalRecipes,
     getRecipesByDifficulty: (state) => (difficulty: Recipe['difficulty']) =>
-      state.recipes.filter(recipe => recipe.difficulty === difficulty)
+      state.recipes.filter(recipe => recipe.difficulty === difficulty),
+    shouldRefresh: (state) => {
+      if (!state.lastFetchTime) return true
+      const now = Date.now()
+      const fiveMinutes = 5 * 60 * 1000 // 5 minutes in milliseconds
+      return now - state.lastFetchTime > fiveMinutes
+    }
   },
 
   actions: {
@@ -68,6 +76,10 @@ export const useRecipesStore = defineStore('recipes', {
         )
         recipe.updatedAt = new Date().toISOString()
       }
+    },
+
+    setLastFetchTime() {
+      this.lastFetchTime = Date.now()
     }
   }
 }) 
