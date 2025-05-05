@@ -23,7 +23,6 @@ interface ApiResponse {
 
 export const useRecipes = () => {
   const recipesStore = useRecipesStore()
-  console.log('useRecipes')
   const loading = ref(false);
 
   const fetchRecipes = async () => {
@@ -60,7 +59,6 @@ export const useRecipes = () => {
         servings: recipe.servings
       }))
 
-      console.log('Processed recipes:', apiRecipes)
 
       // Clear existing recipes and add new ones
       recipesStore.$reset()
