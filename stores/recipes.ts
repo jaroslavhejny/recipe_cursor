@@ -1,23 +1,5 @@
 import { defineStore } from 'pinia'
-
-interface Ingredient {
-  name: string
-  amount: number
-  unit: string
-}
-
-interface Recipe {
-  id: string
-  title: string
-  description: string
-  ingredients: Ingredient[]
-  instructions: string[]
-  cookingTime: number // in minutes
-  difficulty: 'easy' | 'medium' | 'hard'
-  servings: number
-  createdAt: string
-  updatedAt: string
-}
+import type { Recipe, Ingredient } from '~/types/recipe'
 
 interface RecipesState {
   recipes: Recipe[]
@@ -37,7 +19,6 @@ export const useRecipesStore = defineStore('recipes', {
         return String(recipe.id) === String(id)
       })
       return recipe
-    
     },
     getTotalRecipes: (state) => state.totalRecipes,
     getRecipesByDifficulty: (state) => (difficulty: Recipe['difficulty']) =>

@@ -1,18 +1,37 @@
 import { defineEventHandler } from 'h3'
 import OpenAI from 'openai'
+import { cache } from '~/utils/cache'
 
 export default defineEventHandler(async (event) => {
-  console.log('Fetching recipes api')
+  console.log('Načítavanie receptov z API')
 
   // Only handle GET requests
   if (event.method !== 'GET') {
     return {
       status: 'error',
-      error: 'Method not allowed'
+      error: 'Metóda nie je povolená'
     }
   }
 
   const config = useRuntimeConfig()
+  // Need to await getQuery since it returns a promise
+  const query = await getQuery(event)
+  const { maxLength, difficulty } = query
+  console.log('query', maxLength, difficulty)
+  // Generate cache key based on filter params
+  const cacheKey = `recipes-${maxLength}-${difficulty}`
+
+  // Check cache first
+  const cachedRecipes = cache.get(cacheKey) as { recipes: any[] }
+  if (cachedRecipes?.recipes?.length) {
+    console.log('Vracam recepty z cache')
+    return {
+      status: 'success',
+      data: {
+        recipes: cachedRecipes
+      }
+    }
+  }
 
   try {
     // Call OpenAI API to generate recipes
@@ -20,14 +39,24 @@ export default defineEventHandler(async (event) => {
       apiKey: config.openaiApiKey
     })
 
-    const prompt = `Generate 3 unique recipes in JSON format. Each recipe should include:
+    let prompt = `Vygeneruj 3 unikátne recepty v JSON formáte v slovenskom jazyku. Výstup musí byť čistý JSON vo formáte: [ { ... }, { ... }, { ... } ].
+ Každý recept musí obsahovať:
 - id (string)
 - title (string) 
+- description (string)
 - ingredients (array of strings)
 - instructions (string with numbered steps)
 - preparationTime (string representing minutes)
 - servings (number)
 - difficulty (string: Easy, Medium, or Hard)`
+
+    if (maxLength) {
+      prompt += `\nČas prípravy by nemal presiahnuť ${maxLength} minút`
+    }
+
+    if (difficulty) {
+      prompt += `\nVšetky recepty by mali byť ${difficulty} náročnosti`
+    }
 
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
@@ -39,10 +68,12 @@ export default defineEventHandler(async (event) => {
 
     const content = completion.choices[0]?.message?.content
     if (!content) {
-      throw new Error('No content received from OpenAI')
+      throw new Error('Nepodarilo sa získať obsah z OpenAI')
     }
-    console.log('content', content);
     const recipes = JSON.parse(content)
+    // Cache the recipes with the filter-specific key
+    cache.set(cacheKey, recipes)
+
     return {
       status: 'success', 
       data: {
@@ -51,10 +82,10 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error) {
-    console.error('Error in recipes API:', error)
+    console.error('Chyba pri načítaní receptov:', error)
     return {
       status: 'error',
-      error: 'Failed to fetch recipes'
+      error: 'Nepodarilo sa načítať recepty'
     }
   }
 })
