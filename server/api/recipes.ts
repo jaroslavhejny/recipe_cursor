@@ -41,9 +41,8 @@ export default defineEventHandler(async (event) => {
     if (!content) {
       throw new Error('No content received from OpenAI')
     }
-
+    console.log('content', content);
     const recipes = JSON.parse(content)
-    console.log('recipes success', recipes)
     return {
       status: 'success', 
       data: {

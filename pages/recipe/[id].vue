@@ -7,7 +7,13 @@
       </div>
 
       <div>
-        <div v-if="recipe" class="bg-white rounded-lg shadow-md p-6">
+        <div v-if="loading" class="bg-white rounded-lg shadow-md p-6">
+          <div class="flex justify-center">
+            <ULoadingIcon />
+          </div>
+        </div>
+
+        <div v-else-if="recipe" class="bg-white rounded-lg shadow-md p-6">
           <div class="flex items-center justify-between mb-6">
             <span class="px-3 py-1 text-sm rounded-full" 
               :class="{
@@ -95,8 +101,6 @@
 <script setup lang="ts">
 const route = useRoute()
 const recipesStore = useRecipesStore()
-console.log('route', route.params.id);
-console.log('recipesStore', route.params.id, recipesStore.getAllRecipes);
 const recipe = computed(() => recipesStore.getRecipeById(route.params.id as string))
 
 const getDifficultyColor = (difficulty?: string) => {

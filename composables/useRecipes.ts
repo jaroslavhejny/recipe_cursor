@@ -26,7 +26,6 @@ export const useRecipes = () => {
   const loading = ref(false);
 
   const fetchRecipes = async () => {
-    console.log('Starting to fetch recipes...')
     try {
       loading.value = true;
       const { data, error } = await useFetch<ApiResponse>('/api/recipes')
@@ -63,7 +62,6 @@ export const useRecipes = () => {
       // Clear existing recipes and add new ones
       recipesStore.$reset()
       apiRecipes.forEach(recipe => recipesStore.addRecipe(recipe))
-      console.log('Recipes added to store:', recipesStore.recipes)
     } catch (error) {
       console.error('Error fetching recipes:', error)
       throw error
