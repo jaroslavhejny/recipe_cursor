@@ -21,12 +21,28 @@ interface ApiResponse {
 
 export const useRecipes = () => {
   const recipesStore = useRecipesStore()
+  console.log('useRecipes')
 
   const fetchRecipes = async () => {
+    console.log('Starting to fetch recipes...')
     try {
-      const { data } = await useFetch<ApiResponse>('/api/recipes')
-      if (!data.value?.data?.recipes) {
-        throw new Error('Failed to fetch recipes')
+      const { data, error } = await useFetch<ApiResponse>('/api/recipes', {
+        baseURL: '/api'
+      })
+      console.log('API Response:', data.value)
+      console.log('API Error:', error.value)
+
+      if (error.value) {
+        throw new Error(`API Error: ${error.value}`)
+      }
+
+      if (!data.value) {
+        throw new Error('No data received from API')
+      }
+
+      if (!data.value.data?.recipes) {
+        console.warn('No recipes found in response:', data.value)
+        return
       }
 
       const apiRecipes = data.value.data.recipes.map(recipe => ({
@@ -44,11 +60,15 @@ export const useRecipes = () => {
         servings: recipe.servings
       }))
 
+      console.log('Processed recipes:', apiRecipes)
+
       // Clear existing recipes and add new ones
       recipesStore.$reset()
       apiRecipes.forEach(recipe => recipesStore.addRecipe(recipe))
+      console.log('Recipes added to store:', recipesStore.recipes)
     } catch (error) {
       console.error('Error fetching recipes:', error)
+      throw error
     }
   }
 

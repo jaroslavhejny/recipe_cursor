@@ -71,7 +71,6 @@
 
 <script setup lang="ts">
 const recipesStore = useRecipesStore()
-const { fetchRecipes } = useRecipes()
 
 // Fetch recipes when the component mounts
 // Recipes are now fetched in app.vue

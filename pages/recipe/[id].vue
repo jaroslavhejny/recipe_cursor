@@ -109,7 +109,8 @@
 <script setup lang="ts">
 const route = useRoute()
 const recipesStore = useRecipesStore()
-console.log(recipesStore);
+console.log('route', route.params.id);
+console.log('recipesStore', route.params.id, recipesStore.getAllRecipes);
 const recipe = computed(() => recipesStore.getRecipeById(route.params.id as string))
 
 const getDifficultyColor = (difficulty?: string) => {
