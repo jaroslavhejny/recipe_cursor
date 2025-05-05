@@ -11,6 +11,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  runtimeConfig: {
+    openaiApiKey: process.env.OPENAI_API_KEY
+  },
   app: {
     head: {
       title: 'Recipe App',

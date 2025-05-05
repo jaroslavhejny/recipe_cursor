@@ -1,72 +1,73 @@
 <template>
-  <UContainer>
-    <UPage>
-      <UPageHeader
-        title="Welcome to Recipe App"
-        description="Browse our collection of delicious recipes"
-      />
+  <div class="container mx-auto px-4">
+    <div class="py-8">
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold">Welcome to Recipe App</h1>
+        <p class="text-gray-600">Browse our collection of delicious recipes</p>
+      </div>
 
-      <UPageBody>
-        <UCard v-if="recipes.length === 0">
-          <template #header>
-            <UPageHeader
-              title="No Recipes Found"
-              description="Start by adding some recipes to your collection"
-            />
-          </template>
-        </UCard>
+      <div>
+        <div v-if="recipes.length === 0" class="bg-white rounded-lg shadow-md p-6">
+          <div class="mb-6">
+            <h2 class="text-2xl font-bold">No Recipes Found</h2>
+            <p class="text-gray-600">Start by adding some recipes to your collection</p>
+          </div>
+        </div>
 
-        <UGrid v-else :cols="{ default: 1, md: 2, lg: 3 }" gap="6">
-          <UCard
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
             v-for="recipe in recipes"
             :key="recipe.id"
-            class="hover:shadow-lg transition-shadow"
+            class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6"
           >
-            <template #header>
-              <div class="flex items-center justify-between">
-                <UHeading :level="2" class="text-xl font-semibold">
-                  {{ recipe.title }}
-                </UHeading>
-                <UBadge
-                  :label="recipe.difficulty"
-                  :color="getDifficultyColor(recipe.difficulty)"
-                  size="sm"
-                />
-              </div>
-            </template>
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-semibold">
+                {{ recipe.title }}
+              </h2>
+              <span class="px-2 py-1 text-sm rounded-full" 
+                :class="{
+                  'bg-green-100 text-green-800': recipe.difficulty === 'easy',
+                  'bg-yellow-100 text-yellow-800': recipe.difficulty === 'medium',
+                  'bg-red-100 text-red-800': recipe.difficulty === 'hard',
+                  'bg-gray-100 text-gray-800': !recipe.difficulty
+                }">
+                {{ recipe.difficulty }}
+              </span>
+            </div>
 
-            <UDescriptionList>
-              <UDescriptionListItem label="Description">
-                {{ recipe.description }}
-              </UDescriptionListItem>
-              <UDescriptionListItem label="Cooking Time">
-                {{ recipe.cookingTime }} minutes
-              </UDescriptionListItem>
-              <UDescriptionListItem label="Servings">
-                {{ recipe.servings }}
-              </UDescriptionListItem>
-              <UDescriptionListItem label="id">
-                {{ recipe.id }}
-              </UDescriptionListItem>
-            </UDescriptionList>
-
-            <template #footer>
-              <div class="flex justify-end">
-                <UButton
-                  :to="`/recipe/${recipe.id}`"
-                  color="primary"
-                  variant="ghost"
-                  icon="i-heroicons-arrow-right"
-                >
-                  View Recipe
-                </UButton>
+            <dl class="space-y-4">
+              <div>
+                <dt class="font-medium text-gray-700">Description</dt>
+                <dd class="mt-1 text-gray-600">{{ recipe.description }}</dd>
               </div>
-            </template>
-          </UCard>
-        </UGrid>
-      </UPageBody>
-    </UPage>
-  </UContainer>
+              <div>
+                <dt class="font-medium text-gray-700">Cooking Time</dt>
+                <dd class="mt-1 text-gray-600">{{ recipe.cookingTime }} minutes</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-gray-700">Servings</dt>
+                <dd class="mt-1 text-gray-600">{{ recipe.servings }}</dd>
+              </div>
+              <div>
+                <dt class="font-medium text-gray-700">id</dt>
+                <dd class="mt-1 text-gray-600">{{ recipe.id }}</dd>
+              </div>
+            </dl>
+
+            <div class="flex justify-end mt-4">
+              <a :href="`/recipe/${recipe.id}`" 
+                 class="inline-flex items-center px-4 py-2 text-primary-600 hover:text-primary-800 gap-2">
+                View Recipe
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
