@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
       data: {
         recipes: [
           {
-            id: 1,
+            id: '1',
             title: 'Spaghetti Carbonara',
             ingredients: [
               '400g spaghetti',
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
             difficulty: 'Medium'
           },
           {
-            id: 2,
+            id: '2',
             title: 'Classic Caesar Salad',
             ingredients: [
               'Romaine lettuce',
@@ -46,7 +46,7 @@ export default defineEventHandler(async (event) => {
             difficulty: 'Easy'
           },
           {
-            id: 3,
+            id: '3',
             title: 'Chocolate Chip Cookies',
             ingredients: [
               '250g butter',
