@@ -26,11 +26,7 @@ export const useRecipes = () => {
   const fetchRecipes = async () => {
     console.log('Starting to fetch recipes...')
     try {
-      const { data, error } = await useFetch<ApiResponse>('/api/recipes', {
-        baseURL: '/api'
-      })
-      console.log('API Response:', data.value)
-      console.log('API Error:', error.value)
+      const { data, error } = await useFetch<ApiResponse>('/api/recipes')
 
       if (error.value) {
         throw new Error(`API Error: ${error.value}`)

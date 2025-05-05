@@ -5,10 +5,6 @@
 <script setup lang="ts">
 import { useRecipes } from '~/composables/useRecipes'
 
-const { fetchRecipes } = useRecipes()
-
-onMounted(async () => {
-  console.log('Fetching recipes')
-  await fetchRecipes()
-})
+const { fetchRecipes, recipes } = useRecipes()
+await fetchRecipes()
 </script>
