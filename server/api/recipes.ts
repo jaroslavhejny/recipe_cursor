@@ -13,7 +13,6 @@ export default defineEventHandler(async (event) => {
   }
 
   const config = useRuntimeConfig()
-  console.log('OpenAI API Key:', config.openaiApiKey)
 
   try {
     // Call OpenAI API to generate recipes
@@ -44,7 +43,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const recipes = JSON.parse(content)
-
+    console.log('recipes success', recipes)
     return {
       status: 'success', 
       data: {

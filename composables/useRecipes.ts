@@ -13,7 +13,9 @@ interface ApiRecipe {
 interface ApiResponse {
   status: string
   data?: {
-    recipes: ApiRecipe[]
+    recipes: {
+      recipes: ApiRecipe[]
+    }
   }
   message?: string
   error?: string
@@ -22,10 +24,12 @@ interface ApiResponse {
 export const useRecipes = () => {
   const recipesStore = useRecipesStore()
   console.log('useRecipes')
+  const loading = ref(false);
 
   const fetchRecipes = async () => {
     console.log('Starting to fetch recipes...')
     try {
+      loading.value = true;
       const { data, error } = await useFetch<ApiResponse>('/api/recipes')
 
       if (error.value) {
@@ -41,11 +45,11 @@ export const useRecipes = () => {
         return
       }
 
-      const apiRecipes = data.value.data.recipes.map(recipe => ({
+      const apiRecipes = data.value.data.recipes.recipes?.map(recipe => ({
         id: recipe.id,
         title: recipe.title,
         description: recipe.title, // Using title as description since API doesn't provide one
-        ingredients: recipe.ingredients.map(ingredient => ({
+        ingredients: recipe.ingredients?.map(ingredient => ({
           name: ingredient,
           amount: 1, // Default amount since API doesn't provide amounts
           unit: 'unit' // Default unit since API doesn't provide units
@@ -65,10 +69,13 @@ export const useRecipes = () => {
     } catch (error) {
       console.error('Error fetching recipes:', error)
       throw error
+    } finally {
+      loading.value = false;
     }
   }
 
   return {
-    fetchRecipes
+    fetchRecipes,
+    loading
   }
 } 
