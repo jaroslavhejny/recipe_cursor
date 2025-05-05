@@ -3,8 +3,7 @@
     <h1>Recipes</h1>
     <div class="recipe-list">
       <div v-for="recipe in recipes" :key="recipe.id" class="recipe-item">
-        <h2 class="recipe-title">{{ recipe.title }}</h2>
-        <p>{{ recipe.description }}</p>
+        <h2 class="recipe-title" @click="navigateTo(`/recipe/${recipe.id}`)">{{ recipe.title }}</h2>
       </div>
     </div>
   </div>
