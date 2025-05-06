@@ -17,12 +17,11 @@ export default defineEventHandler(async (event) => {
   // Need to await getQuery since it returns a promise
   const query = await getQuery(event)
   const { maxLength, difficulty } = query
-  console.log('query', maxLength, difficulty)
   // Generate cache key based on filter params
   const cacheKey = `recipes-${maxLength}-${difficulty}`
-
   // Check cache first
   const cachedRecipes = cache.get(cacheKey) as { recipes: any[] }
+
   if (cachedRecipes?.recipes?.length) {
     console.log('Vracam recepty z cache')
     return {

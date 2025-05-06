@@ -63,13 +63,13 @@
           </div>
 
           <div class="flex justify-end mt-6">
-            <a href="/" 
+            <NuxtLink to="/" 
                class="inline-flex items-center px-4 py-2 text-gray-700 hover:text-gray-900 gap-2">
               <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Späť na recepty
-            </a>
+            </NuxtLink>
           </div>
         </div>
 
@@ -79,13 +79,13 @@
             <p class="text-gray-600">Hľadaný recept neexistuje</p>
           </div>
           <div class="flex justify-end">
-            <a href="/" 
+            <NuxtLink to="/" 
                class="inline-flex items-center px-4 py-2 text-primary-600 hover:text-primary-800 gap-2">
               <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Späť na recepty
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>

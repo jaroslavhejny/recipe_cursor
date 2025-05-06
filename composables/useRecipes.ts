@@ -35,12 +35,6 @@ export const useRecipes = () => {
   const loading = ref(false)
 
   const fetchRecipes = async (cookingTime?: number, difficulty?: string) => {
-    // If we have recipes and they're not stale, don't fetch
-    if (recipesStore.recipes.length > 0) {
-      console.log('Using cached recipes')
-      return
-    }
-
     console.log('Načítavanie receptov', cookingTime, difficulty)
     try {
       loading.value = true
@@ -64,7 +58,6 @@ export const useRecipes = () => {
         return
       }
 
-      console.log('data.value.data.recipes', data.value.data.recipes)
 
       const apiRecipes = data.value.data.recipes.map(recipe => ({
         id: recipe.id,
@@ -82,7 +75,6 @@ export const useRecipes = () => {
       }))
 
       recipesStore.$reset()
-      console.log('apiRecipes', apiRecipes)
       apiRecipes.forEach(recipe => recipesStore.addRecipe(recipe))
       recipesStore.setLastFetchTime()
     } catch (error) {
