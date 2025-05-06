@@ -34,15 +34,16 @@ export const useRecipes = () => {
   const recipesStore = useRecipesStore()
   const loading = ref(false)
 
-  const fetchRecipes = async (cookingTime?: number, difficulty?: string, filters?: string[]) => {
-    console.log('Načítavanie receptov', cookingTime, difficulty, filters)
+  const fetchRecipes = async (cookingTime?: number, difficulty?: string, filters?: string[], cuisine?: string[]) => {
+    console.log('Načítavanie receptov', cookingTime, difficulty, filters, cuisine)
     try {
       loading.value = true
       const { data, error } = await useFetch<ApiResponse>('/api/recipes', {
         query: {
           maxLength: cookingTime,
           difficulty,
-          filters
+          filters,
+          cuisine
         }
       })
 

@@ -32,6 +32,14 @@
         />
       </CardWrapper>
 
+      <!-- Cuisine Filter -->
+      <CardWrapper heading="Typ kuchyne">
+        <ToggleOptions
+          v-model="selectedCuisine"
+          :options="cuisineOptions"
+        />
+      </CardWrapper>
+
       <div>
         <div v-if="recipes.length === 0" class="bg-white rounded-lg shadow-md p-6">
           <div class="mb-6">
@@ -52,7 +60,7 @@
     </div>
     <div class="flex justify-center mt-8 mb-8">
       <button 
-        @click="fetchRecipes(cookingTime, difficultyLevel)"
+        @click="fetchRecipes(cookingTime, difficultyLevel, selectedFilters, selectedCuisine)"
         class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 hover:scale-105 hover:shadow-lg hover:cursor-pointer"
         :disabled="loading"
       >
@@ -85,8 +93,15 @@ const filterOptions = [
   { label: 'Nízko sacharidové', value: 'low-carb' }
 ]
 
-const selectedFilters = ref<string[]>([])
+const cuisineOptions = [
+  { label: 'Čínska', value: 'chinese' },
+  { label: 'Itálska', value: 'italian' },
+  { label: 'Americká', value: 'american' },
+  { label: 'Japonská', value: 'japanese' }
+]
 
+const selectedFilters = ref<string[]>([])
+const selectedCuisine = ref<string[]>([])
 // Get all recipes from the store
 const recipes = computed(() => recipesStore.getAllRecipes)
 
@@ -98,14 +113,6 @@ const filteredRecipes = computed(() => {
   )
 })
 
-// Fetch recipes when component mounts
-onMounted(async () => {
-  try {
-    await fetchRecipes(cookingTime.value, difficultyLevel.value)
-  } catch (error) {
-    console.error('Failed to fetch recipes:', error) 
-  }
-})
 </script>
 
 <style scoped>
