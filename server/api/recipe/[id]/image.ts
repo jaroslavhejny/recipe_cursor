@@ -1,52 +1,45 @@
 import { defineEventHandler } from 'h3'
-import OpenAI from 'openai'
+import { useRecipesStore } from '~/stores/recipes'
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const id = event.context.params?.id
+  const query = await getQuery(event)
+  const { name } = query
 
-  if (!id) {
+  if (!name) {
     return {
       status: 'error',
-      error: 'Chýba ID receptu'
+      error: 'Chýba meno receptu'
     }
   }
 
   try {
-    const openai = new OpenAI({
-      apiKey: config.openaiApiKey
-    })
-
-    // Get recipe details from the store
-    const recipesStore = useRecipesStore()
-    const recipe = recipesStore.getRecipeById(id)
-
-    if (!recipe) {
-      return {
-        status: 'error',
-        error: 'Recept nebol nájdený'
+    // Use Unsplash API to get a random food image
+    const unsplashResponse = await fetch(
+      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(name + ' food')}&orientation=landscape`,
+      {
+        headers: {
+          'Authorization': `Client-ID ${config.unsplashAccessKey}`
+        }
       }
+    )
+
+
+    if (!unsplashResponse.ok) {
+      throw new Error('Nepodarilo sa získať obrázok z Unsplash')
     }
 
-    const imagePrompt = `Create a beautiful, appetizing photo of ${recipe.title}. The dish should be presented on a clean plate with professional food photography lighting. Style: realistic, high-quality food photography.`
-    
-    const imageResponse = await openai.images.generate({
-      model: "dall-e-3",
-      prompt: imagePrompt,
-      n: 1,
-      size: "1024x1024",
-      quality: "standard",
-      style: "natural"
-    })
-
-    const imageUrl = imageResponse.data?.[0]?.url
+    const imageData = await unsplashResponse.json()
+    const imageUrl = imageData.urls.regular
 
     if (!imageUrl) {
-      throw new Error('Nepodarilo sa vygenerovať obrázok')
+      throw new Error('Nepodarilo sa získať URL obrázka')
     }
 
+    const recipesStore = useRecipesStore()
     // Update recipe with the new image URL
-    recipesStore.updateRecipeImage(id, imageUrl)
+    recipesStore.updateRecipeImage(id || '1', imageUrl)
 
     return {
       status: 'success',
@@ -56,10 +49,10 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error) {
-    console.error('Chyba pri generovaní obrázka:', error)
+    console.error('Chyba pri získavaní obrázka:', error)
     return {
       status: 'error',
-      error: 'Nepodarilo sa vygenerovať obrázok'
+      error: 'Nepodarilo sa získať obrázok'
     }
   }
 }) 

@@ -12,7 +12,8 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
-    openaiApiKey: process.env.OPENAI_API_KEY
+    openaiApiKey: process.env.OPENAI_API_KEY,
+    unsplashAccessKey: process.env.UNSPLASH_API_KEY
   },
   plugins: [{src: '~/plugins/piniaPersist.client.js'}],
   app: {

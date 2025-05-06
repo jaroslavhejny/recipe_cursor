@@ -10,9 +10,9 @@
     </div>
     <div v-else-if="recipe" class="max-w-4xl mx-auto">
       <div class="mb-8">
-        <div v-if="recipe.imageUrl" class="relative h-96 mb-8">
+        <div v-if="imageUrl" class="relative h-96 mb-8">
           <img 
-            :src="recipe.imageUrl" 
+            :src="imageUrl" 
             :alt="recipe.title"
             class="w-full h-full object-cover rounded-lg shadow-lg"
           />
@@ -96,6 +96,7 @@ const route = useRoute()
 const recipesStore = useRecipesStore()
 const loading = ref(true)
 const generatingImage = ref(false)
+const imageUrl = ref('');
 
 const recipe = computed(() => {
   const id = route.params.id as string
@@ -107,7 +108,11 @@ const generateImage = async () => {
   
   try {
     generatingImage.value = true
-    const { data, error } = await useFetch(`/api/recipe/${recipe.value.id}/image`)
+    const { data, error } = await useFetch(`/api/recipe/${recipe.value.id}/image`, {
+      query: {
+        name: recipe.value.title
+      }
+    })
     
     if (error.value) {
       throw new Error(error.value.message)
@@ -116,6 +121,8 @@ const generateImage = async () => {
     if (!data.value?.data?.imageUrl) {
       throw new Error('Nepodarilo sa vygenerovať obrázok')
     }
+
+    imageUrl.value = data.value.data.imageUrl;
 
     // The store will be updated automatically through the API
   } catch (error) {
@@ -127,5 +134,8 @@ const generateImage = async () => {
 
 onMounted(() => {
   loading.value = false
+  if (!imageUrl.value) {
+    generateImage()
+  }
 })
 </script> 

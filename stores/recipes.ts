@@ -74,8 +74,10 @@ export const useRecipesStore = defineStore('recipes', {
       }
     },
 
-    updateRecipeImage(id: string, imageUrl: string) {
-      const recipe = this.recipes.find(r => r.id === id)
+    updateRecipeImage(id: string, imageUrl: string) { 
+      const recipe = this.recipes.find((r) => {
+        return r.id === id
+      })
       if (recipe) {
         recipe.imageUrl = imageUrl
       }
