@@ -20,18 +20,22 @@
 
         <!-- Filter Options -->
         <CardWrapper heading="Filtre">
-          <ToggleOptions
-            v-model="selectedFilters"
-            :options="filterOptions"
-          />
+          <div class="flex flex-col gap-2">
+            <ToggleOptions
+              v-model="selectedFilters"
+              :options="filterOptions"
+            />
+          </div>
         </CardWrapper>
 
         <!-- Cuisine Filter -->
         <CardWrapper heading="Typ kuchyne">
-          <ToggleOptions
-            v-model="selectedCuisine"
-            :options="cuisineOptions"
-          />
+          <div class="flex flex-col gap-2">
+            <ToggleOptions
+              v-model="selectedCuisine"
+              :options="cuisineOptions"
+            />
+          </div>
         </CardWrapper>
       </div>
 
@@ -86,18 +90,72 @@ const filterOptions = [
   { label: 'Bez laktózy', value: 'lactose-free' },
   { label: 'Nízko sacharidové', value: 'low-carb' }
 ]
-
 const cuisineOptions = [
-  { label: 'Slovenská', value: 'slovak' },
-  { label: 'Česká', value: 'czech' },
-  { label: 'Čínska', value: 'chinese' },
-  { label: 'Itálska', value: 'italian' },
-  { label: 'Americká', value: 'american' },
-  { label: 'Japonská', value: 'japanese' },
-  { label: 'Indická', value: 'indian' },
-  { label: 'Mexická', value: 'mexican' },
-  { label: 'Thajská', value: 'thai' },
-  { label: 'Iné', value: 'other' }
+  { 
+    label: 'Slovenská', 
+    value: 'slovak',
+    icon: 'https://flagcdn.com/w40/sk.png'
+  },
+  { 
+    label: 'Česká',
+    value: 'czech', 
+    icon: 'https://flagcdn.com/w40/cz.png'
+  },
+  { 
+    label: 'Maďarská',
+    value: 'hungarian',
+    icon: 'https://flagcdn.com/w40/hu.png'
+  },
+  { 
+    label: 'Poľská',
+    value: 'polish',
+    icon: 'https://flagcdn.com/w40/pl.png'
+  },
+  { 
+    label: 'Čínska', 
+    value: 'chinese',
+    icon: 'https://flagcdn.com/w40/cn.png'
+  },
+  { 
+    label: 'Itálska', 
+    value: 'italian',
+    icon: 'https://flagcdn.com/w40/it.png'
+  },
+  { 
+    label: 'Americká', 
+    value: 'american',
+    icon: 'https://flagcdn.com/w40/us.png'
+  },
+  { 
+    label: 'Japonská', 
+    value: 'japanese',
+    icon: 'https://flagcdn.com/w40/jp.png'
+  },
+  {
+    label: 'Grécka',
+    value: 'greek',
+    icon: 'https://flagcdn.com/w40/gr.png'
+  },
+  {
+    label: 'Mexická',
+    value: 'mexican',
+    icon: 'https://flagcdn.com/w40/mx.png'
+  },
+  {
+    label: 'Indická',
+    value: 'indian',
+    icon: 'https://flagcdn.com/w40/in.png'
+  },
+  {
+    label: 'Thajská',
+    value: 'thai',
+    icon: 'https://flagcdn.com/w40/th.png'
+  },
+  {
+    label: 'Iné',
+    value: 'other',
+    icon: 'https://flagcdn.com/w40/sc.png'
+  }
 ]
 
 const selectedFilters = ref<string[]>([])
