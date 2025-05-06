@@ -36,7 +36,7 @@ export const useRecipes = () => {
 
   const fetchRecipes = async (cookingTime?: number, difficulty?: string) => {
     // If we have recipes and they're not stale, don't fetch
-    if (recipesStore.recipes.length > 0 && !recipesStore.shouldRefresh) {
+    if (recipesStore.recipes.length > 0) {
       console.log('Using cached recipes')
       return
     }

@@ -80,15 +80,6 @@ const filteredRecipes = computed(() => {
     recipe.difficulty === difficultyLevel.value
   )
 })
-
-// Fetch recipes when component mounts
-onMounted(async () => {
-  try {
-    await fetchRecipes(cookingTime.value, difficultyLevel.value)
-  } catch (error) {
-    console.error('Failed to fetch recipes:', error) 
-  }
-})
 </script>
 
 <style scoped>

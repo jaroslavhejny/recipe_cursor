@@ -7,13 +7,8 @@
       </div>
 
       <div>
-        <div v-if="loading" class="bg-white rounded-lg shadow-md p-6">
-          <div class="flex justify-center">
-            <ULoadingIcon />
-          </div>
-        </div>
 
-        <div v-else-if="recipe" class="bg-white rounded-lg shadow-md p-6">
+        <div v-if="recipe" class="bg-white rounded-lg shadow-md p-6">
           <div class="flex items-center justify-between mb-6">
             <span class="px-3 py-1 text-sm rounded-full" 
               :class="{

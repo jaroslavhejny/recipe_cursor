@@ -15,7 +15,10 @@ export const useRecipesStore = defineStore('recipes', {
   }),
 
   getters: {
-    getAllRecipes: (state) => state.recipes,
+    getAllRecipes: (state) => {
+      console.log('recipes', state.recipes)
+      return state.recipes
+    },
     getRecipeById: (state) => (id: string) => {
       const recipe = state.recipes.find(recipe => {
         return String(recipe.id) === String(id)
@@ -25,12 +28,6 @@ export const useRecipesStore = defineStore('recipes', {
     getTotalRecipes: (state) => state.totalRecipes,
     getRecipesByDifficulty: (state) => (difficulty: Recipe['difficulty']) =>
       state.recipes.filter(recipe => recipe.difficulty === difficulty),
-    shouldRefresh: (state) => {
-      if (!state.lastFetchTime) return true
-      const now = Date.now()
-      const fiveMinutes = 5 * 60 * 1000 // 5 minutes in milliseconds
-      return now - state.lastFetchTime > fiveMinutes
-    }
   },
 
   actions: {
@@ -45,6 +42,7 @@ export const useRecipesStore = defineStore('recipes', {
     },
 
     removeRecipe(id: string) {
+      console.log('removeRecipe', id);
       this.recipes = this.recipes.filter(recipe => recipe.id !== id)
       this.totalRecipes--
     },
