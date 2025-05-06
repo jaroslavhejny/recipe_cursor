@@ -8,31 +8,29 @@
       </div>
 
       <!-- Cooking Time Slider -->
-      <div class="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">Nastavte čas prípravy (minúty)</h2>
+      <CardWrapper heading="Nastavte čas prípravy (minúty)">
         <Slider
           v-model="cookingTime"
           :min="0"
           :max="120"
           :step="5"
         />
-      </div>
+      </CardWrapper>
+
       <!-- Difficulty Filter -->
-      <div class="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">Nastavte úroveň náročnosti</h2>
+      <CardWrapper heading="Nastavte úroveň náročnosti">
         <DifficultySlider
           v-model="difficultyLevel"
         />
-      </div>
+      </CardWrapper>
 
       <!-- Filter Options -->
-      <div class="mb-8 p-4 bg-white rounded-lg shadow">
-        <h2 class="text-xl font-semibold mb-4">Filtre</h2>
+      <CardWrapper heading="Filtre">
         <ToggleOptions
           v-model="selectedFilters"
           :options="filterOptions"
         />
-      </div>
+      </CardWrapper>
 
       <div>
         <div v-if="recipes.length === 0" class="bg-white rounded-lg shadow-md p-6">

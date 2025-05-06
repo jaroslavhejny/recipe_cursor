@@ -16,9 +16,9 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   // Need to await getQuery since it returns a promise
   const query = await getQuery(event)
-  const { maxLength, difficulty } = query
+  const { maxLength, difficulty, filters } = query
   // Generate cache key based on filter params
-  const cacheKey = `recipes-${maxLength}-${difficulty}`
+  const cacheKey = `recipes-${maxLength}-${difficulty}-${filters}`
   // Check cache first
   const cachedRecipes = cache.get(cacheKey) as { recipes: any[] }
 
@@ -55,6 +55,11 @@ export default defineEventHandler(async (event) => {
 
     if (difficulty) {
       prompt += `\nVšetky recepty by mali byť ${difficulty} náročnosti`
+    }
+
+    if (filters) {
+      console.log('filters', filters)
+      prompt += `\nVšetky recepty by mali byť ${filters}`
     }
 
     const completion = await openai.chat.completions.create({
