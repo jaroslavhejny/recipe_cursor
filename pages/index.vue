@@ -176,6 +176,13 @@ const filteredRecipes = computed(() => {
 const clickFetchRecipes = () => {
   fetchRecipes(cookingTime.value, difficultyLevel.value, selectedFilters.value, selectedCuisine.value)
 }
+
+onMounted(() => {
+  loading.value = false
+  if (!recipes.value.length) {
+    clickFetchRecipes()
+  }
+})
 </script>
 
 <style scoped>
