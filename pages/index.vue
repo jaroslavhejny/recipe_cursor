@@ -25,6 +25,15 @@
         />
       </div>
 
+      <!-- Filter Options -->
+      <div class="mb-8 p-4 bg-white rounded-lg shadow">
+        <h2 class="text-xl font-semibold mb-4">Filtre</h2>
+        <ToggleOptions
+          v-model="selectedFilters"
+          :options="filterOptions"
+        />
+      </div>
+
       <div>
         <div v-if="recipes.length === 0" class="bg-white rounded-lg shadow-md p-6">
           <div class="mb-6">
@@ -70,6 +79,16 @@ const recipesStore = useRecipesStore()
 const cookingTime = ref(60)
 const difficultyLevel = ref<Difficulty>('medium')
 
+// Example options for the toggle component
+const filterOptions = [
+  { label: 'Vegetariánske', value: 'vegetarian' },
+  { label: 'Bezlepkové', value: 'gluten-free' },
+  { label: 'Bez laktózy', value: 'lactose-free' },
+  { label: 'Nízko sacharidové', value: 'low-carb' }
+]
+
+const selectedFilters = ref<string[]>([])
+
 // Get all recipes from the store
 const recipes = computed(() => recipesStore.getAllRecipes)
 
@@ -79,6 +98,15 @@ const filteredRecipes = computed(() => {
     recipe.cookingTime <= cookingTime.value &&
     recipe.difficulty === difficultyLevel.value
   )
+})
+
+// Fetch recipes when component mounts
+onMounted(async () => {
+  try {
+    await fetchRecipes(cookingTime.value, difficultyLevel.value)
+  } catch (error) {
+    console.error('Failed to fetch recipes:', error) 
+  }
 })
 </script>
 
