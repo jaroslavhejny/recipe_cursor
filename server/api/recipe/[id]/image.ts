@@ -25,7 +25,6 @@ export default defineEventHandler(async (event) => {
       }
     )
 
-
     if (!imageResponse.ok) {
       throw new Error('Nepodarilo sa získať obrázok z Unsplash')
     }
