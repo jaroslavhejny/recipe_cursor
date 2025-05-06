@@ -1,6 +1,5 @@
 import { defineEventHandler } from 'h3'
 import OpenAI from 'openai'
-import { cache } from '~/utils/cache'
 
 export default defineEventHandler(async (event) => {
   console.log('Načítavanie receptov z API')
@@ -17,20 +16,7 @@ export default defineEventHandler(async (event) => {
   // Need to await getQuery since it returns a promise
   const query = await getQuery(event)
   const { maxLength, difficulty, filters, cuisine } = query
-  // Generate cache key based on filter params
-  const cacheKey = `recipes-${maxLength}-${difficulty}-${filters}-${cuisine}`
-  // Check cache first
-  const cachedRecipes = cache.get(cacheKey) as { recipes: any[] }
-
-  if (cachedRecipes?.recipes?.length) {
-    console.log('Vracam recepty z cache')
-    return {
-      status: 'success',
-      data: {
-        recipes: cachedRecipes
-      }
-    }
-  }
+  console.log('query', query)
 
   try {
     // Call OpenAI API to generate recipes
@@ -44,10 +30,10 @@ export default defineEventHandler(async (event) => {
 - title (string) 
 - description (string)
 - ingredients (array of strings)
-- instructions (string with numbered steps)
+- instructions (array of strings, where each string is one step)
 - preparationTime (string representing minutes)
 - servings (number)
-- difficulty (string: Easy, Medium, or Hard)`
+- difficulty (string: easy, medium, or hard)`
 
     if (maxLength) {
       prompt += `\nČas prípravy by nemal presiahnuť ${maxLength} minút`
@@ -80,8 +66,6 @@ export default defineEventHandler(async (event) => {
       throw new Error('Nepodarilo sa získať obsah z OpenAI')
     }
     const recipes = JSON.parse(content)
-    // Cache the recipes with the filter-specific key
-    cache.set(cacheKey, recipes)
 
     return {
       status: 'success', 

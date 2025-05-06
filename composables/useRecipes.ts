@@ -6,7 +6,7 @@ interface ApiRecipe {
   title: string
   description: string
   ingredients: string[]
-  instructions: string
+  instructions: string | string[]
   preparationTime: string
   servings: number
   difficulty: string
@@ -30,12 +30,25 @@ const mapDifficulty = (difficulty: string): Difficulty => {
   return difficultyMap[difficulty.toLowerCase()] || 'medium' as Difficulty
 }
 
+const normalizeInstructions = (instructions: string | string[]): string[] => {
+  if (Array.isArray(instructions)) {
+    return instructions
+  }
+  // Split by newlines and filter out empty lines
+  return instructions
+    .split('\n')
+    .map(step => step.trim())
+    .filter(step => step.length > 0)
+}
+
 export const useRecipes = () => {
   const recipesStore = useRecipesStore()
   const loading = ref(false)
 
   const fetchRecipes = async (cookingTime?: number, difficulty?: string, filters?: string[], cuisine?: string[]) => {
-    console.log('Načítavanie receptov', cookingTime, difficulty, filters, cuisine)
+    // If we have recipes and they're not stale, don't fetch
+
+    console.log('Načítavanie receptov', cookingTime, difficulty)
     try {
       loading.value = true
       const { data, error } = await useFetch<ApiResponse>('/api/recipes', {
@@ -60,6 +73,7 @@ export const useRecipes = () => {
         return
       }
 
+      console.log('data.value.data.recipes', data.value.data.recipes)
 
       const apiRecipes = data.value.data.recipes.map(recipe => ({
         id: recipe.id,
@@ -70,13 +84,14 @@ export const useRecipes = () => {
           amount: 1,
           unit: 'ks'
         })),
-        instructions: recipe.instructions.split('\n'),
+        instructions: normalizeInstructions(recipe.instructions),
         cookingTime: parseInt(recipe.preparationTime),
         difficulty: mapDifficulty(recipe.difficulty),
         servings: recipe.servings
       }))
 
       recipesStore.$reset()
+      console.log('apiRecipes', apiRecipes)
       apiRecipes.forEach(recipe => recipesStore.addRecipe(recipe))
       recipesStore.setLastFetchTime()
     } catch (error) {

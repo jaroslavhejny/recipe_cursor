@@ -7,40 +7,42 @@
         <p class="text-gray-600">Prezrite si našu zbierku chutných receptov</p>
       </div>
 
-      <!-- Cooking Time Slider -->
-      <CardWrapper heading="Nastavte čas prípravy (minúty)">
-        <Slider
-          v-model="cookingTime"
-          :min="0"
-          :max="120"
-          :step="5"
-        />
-      </CardWrapper>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Cooking Time Slider -->
+        <CardWrapper heading="Nastavte čas prípravy (minúty)">
+          <Slider
+            v-model="cookingTime"
+            :min="0"
+            :max="120"
+            :step="5"
+          />
+        </CardWrapper>
 
-      <!-- Difficulty Filter -->
-      <CardWrapper heading="Nastavte úroveň náročnosti">
-        <DifficultySlider
-          v-model="difficultyLevel"
-        />
-      </CardWrapper>
+        <!-- Difficulty Filter -->
+        <CardWrapper heading="Nastavte úroveň náročnosti">
+          <DifficultySlider
+            v-model="difficultyLevel"
+          />
+        </CardWrapper>
 
-      <!-- Filter Options -->
-      <CardWrapper heading="Filtre">
-        <ToggleOptions
-          v-model="selectedFilters"
-          :options="filterOptions"
-        />
-      </CardWrapper>
+        <!-- Filter Options -->
+        <CardWrapper heading="Filtre">
+          <ToggleOptions
+            v-model="selectedFilters"
+            :options="filterOptions"
+          />
+        </CardWrapper>
 
-      <!-- Cuisine Filter -->
-      <CardWrapper heading="Typ kuchyne">
-        <ToggleOptions
-          v-model="selectedCuisine"
-          :options="cuisineOptions"
-        />
-      </CardWrapper>
+        <!-- Cuisine Filter -->
+        <CardWrapper heading="Typ kuchyne">
+          <ToggleOptions
+            v-model="selectedCuisine"
+            :options="cuisineOptions"
+          />
+        </CardWrapper>
+      </div>
 
-      <div>
+      <div class="mt-8">
         <div v-if="recipes.length === 0" class="bg-white rounded-lg shadow-md p-6">
           <div class="mb-6">
             <h2 class="text-2xl font-bold">Nenašli sa žiadne recepty</h2>
@@ -60,7 +62,7 @@
     </div>
     <div class="flex justify-center mt-8 mb-8">
       <button 
-        @click="fetchRecipes(cookingTime, difficultyLevel, selectedFilters, selectedCuisine)"
+        @click="clickFetchRecipes()"
         class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 hover:scale-105 hover:shadow-lg hover:cursor-pointer"
         :disabled="loading"
       >
@@ -113,6 +115,10 @@ const filteredRecipes = computed(() => {
   )
 })
 
+const clickFetchRecipes = () => {
+  console.log('fetching recipes');
+  fetchRecipes(cookingTime.value, difficultyLevel.value, selectedFilters.value, selectedCuisine.value)
+}
 </script>
 
 <style scoped>

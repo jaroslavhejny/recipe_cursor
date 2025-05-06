@@ -11,7 +11,7 @@ export interface Recipe {
   title: string
   description: string
   ingredients: Ingredient[]
-  instructions: string[]
+  instructions: string[] // Always an array of strings
   cookingTime: number // in minutes
   difficulty: Difficulty
   servings: number

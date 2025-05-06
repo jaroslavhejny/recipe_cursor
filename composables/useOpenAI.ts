@@ -14,7 +14,7 @@ export const useOpenAI = () => {
         messages: [
           {
             role: "system",
-            content: "You are a helpful recipe assistant. Generate recipes in a structured format."
+            content: "You are a helpful recipe assistant. Generate recipes in a structured format. In slovak language"
           },
           {
             role: "user",
