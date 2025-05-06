@@ -1,6 +1,7 @@
 <template>
   <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6">
     <div v-if="loading" class="animate-pulse">
+      <div class="h-48 bg-gray-200 rounded-lg mb-4"></div>
       <div class="flex items-center justify-between mb-4">
         <div class="h-6 bg-gray-200 rounded w-1/2"></div>
         <div class="h-4 bg-gray-200 rounded w-16"></div>
@@ -15,6 +16,13 @@
       </div>
     </div>
     <div v-else>
+      <div v-if="recipe.imageUrl" class="mb-4">
+        <img 
+          :src="recipe.imageUrl" 
+          :alt="recipe.title"
+          class="w-full h-48 object-cover rounded-lg shadow-md"
+        />
+      </div>
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold">
           {{ recipe.title }}

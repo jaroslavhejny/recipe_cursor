@@ -1,4 +1,5 @@
 <template>
+  <div>
     <div class="py-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Cooking Time Slider -->
@@ -69,6 +70,7 @@
         </svg>
         {{ loading ? 'Načítava sa...' : 'Získať recepty' }}
       </button>
+    </div>
     </div>
 </template>
 
@@ -172,7 +174,6 @@ const filteredRecipes = computed(() => {
 })
 
 const clickFetchRecipes = () => {
-  console.log('fetching recipes');
   fetchRecipes(cookingTime.value, difficultyLevel.value, selectedFilters.value, selectedCuisine.value)
 }
 </script>

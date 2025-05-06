@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   plugins: [{src: '~/plugins/piniaPersist.client.js'}],
   app: {
     head: {
-      title: 'Řecepty',
+      title: 'Recepty',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }

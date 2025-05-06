@@ -48,7 +48,6 @@ export const useRecipes = () => {
   const fetchRecipes = async (cookingTime?: number, difficulty?: string, filters?: string[], cuisine?: string[]) => {
     // If we have recipes and they're not stale, don't fetch
 
-    console.log('Načítavanie receptov', cookingTime, difficulty)
     try {
       loading.value = true
       const { data, error } = await useFetch<ApiResponse>('/api/recipes', {
@@ -73,7 +72,6 @@ export const useRecipes = () => {
         return
       }
 
-      console.log('data.value.data.recipes', data.value.data.recipes)
 
       const apiRecipes = data.value.data.recipes.map(recipe => ({
         id: recipe.id,
@@ -91,7 +89,6 @@ export const useRecipes = () => {
       }))
 
       recipesStore.$reset()
-      console.log('apiRecipes', apiRecipes)
       apiRecipes.forEach(recipe => recipesStore.addRecipe(recipe))
       recipesStore.setLastFetchTime()
     } catch (error) {

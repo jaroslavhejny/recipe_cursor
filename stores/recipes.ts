@@ -16,7 +16,6 @@ export const useRecipesStore = defineStore('recipes', {
 
   getters: {
     getAllRecipes: (state) => {
-      console.log('recipes', state.recipes)
       return state.recipes
     },
     getRecipeById: (state) => (id: string) => {
@@ -42,7 +41,6 @@ export const useRecipesStore = defineStore('recipes', {
     },
 
     removeRecipe(id: string) {
-      console.log('removeRecipe', id);
       this.recipes = this.recipes.filter(recipe => recipe.id !== id)
       this.totalRecipes--
     },
@@ -76,8 +74,21 @@ export const useRecipesStore = defineStore('recipes', {
       }
     },
 
+    updateRecipeImage(id: string, imageUrl: string) {
+      const recipe = this.recipes.find(r => r.id === id)
+      if (recipe) {
+        recipe.imageUrl = imageUrl
+      }
+    },
+
     setLastFetchTime() {
       this.lastFetchTime = Date.now()
+    },
+
+    $reset() {
+      this.recipes = []
+      this.totalRecipes = 0
+      this.lastFetchTime = null
     }
   }
 }) 

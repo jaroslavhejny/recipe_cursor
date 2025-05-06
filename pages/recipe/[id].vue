@@ -1,118 +1,131 @@
 <template>
-  <div class="container mx-auto px-4 py-12">
-    <div v-if="recipe" class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="mb-10">
-        <h1 class="text-4xl font-bold mb-3">{{ recipe.title }}</h1>
-        <p class="text-lg text-gray-600">{{ recipe.description }}</p>
+  <div class="container mx-auto px-4 py-8">
+    <div v-if="loading" class="animate-pulse">
+      <div class="h-96 bg-gray-200 rounded-lg mb-8"></div>
+      <div class="space-y-4">
+        <div class="h-8 bg-gray-200 rounded w-1/3"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+      </div>
+    </div>
+    <div v-else-if="recipe" class="max-w-4xl mx-auto">
+      <div class="mb-8">
+        <div v-if="recipe.imageUrl" class="relative h-96 mb-8">
+          <img 
+            :src="recipe.imageUrl" 
+            :alt="recipe.title"
+            class="w-full h-full object-cover rounded-lg shadow-lg"
+          />
+        </div>
+        <div v-else class="relative h-96 mb-8 bg-gray-100 rounded-lg flex items-center justify-center">
+          <button 
+            @click="generateImage" 
+            class="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+            :disabled="generatingImage"
+          >
+            <svg v-if="generatingImage" class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ generatingImage ? 'Generujem obrázok...' : 'Vygenerovať obrázok' }}
+          </button>
+        </div>
       </div>
 
-      <!-- Recipe Card -->
-      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-        <!-- Recipe Meta -->
-        <div class="bg-gray-50 p-6 border-b">
-          <div class="flex flex-wrap items-center gap-4">
-            <span class="px-4 py-2 rounded-full text-sm font-medium" 
-              :class="{
-                'bg-green-100 text-green-800': recipe.difficulty === 'easy',
-                'bg-yellow-100 text-yellow-800': recipe.difficulty === 'medium', 
-                'bg-red-100 text-red-800': recipe.difficulty === 'hard',
-                'bg-gray-100 text-gray-800': !recipe.difficulty
-              }">
-              {{ recipe.difficulty }}
-            </span>
-            
-            <span class="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
-              <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {{ recipe.cookingTime }} minút
-            </span>
-
-            <span class="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700">
-              <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-              {{ recipe.servings }} porcií
-            </span>
-          </div>
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h1 class="text-3xl font-bold">{{ recipe.title }}</h1>
+          <span class="px-3 py-1 rounded-full text-sm" 
+            :class="{
+              'bg-green-100 text-green-800': recipe.difficulty === 'easy',
+              'bg-yellow-100 text-yellow-800': recipe.difficulty === 'medium',
+              'bg-red-100 text-red-800': recipe.difficulty === 'hard'
+            }">
+            {{ recipe.difficulty }}
+          </span>
         </div>
 
-        <div class="p-6 grid md:grid-cols-2 gap-8">
-          <!-- Ingredients -->
+        <p class="text-gray-600 mb-8">{{ recipe.description }}</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h3 class="text-2xl font-semibold mb-6">Ingrediencie</h3>
-            <ul class="space-y-4">
-              <li v-for="ingredient in recipe.ingredients" 
-                  :key="ingredient.name"
-                  class="flex items-center justify-between py-2 border-b border-gray-100">
-                <span class="font-medium">{{ ingredient.name }}</span>
-                <span class="text-gray-600">
-                  {{ ingredient.amount }} {{ ingredient.unit }}
-                </span>
+            <h2 class="text-xl font-semibold mb-4">Ingrediencie</h2>
+            <ul class="space-y-2">
+              <li v-for="ingredient in recipe.ingredients" :key="ingredient.name" class="flex items-center gap-2">
+                <span class="text-gray-600">{{ ingredient.amount }} {{ ingredient.unit }}</span>
+                <span>{{ ingredient.name }}</span>
               </li>
             </ul>
           </div>
 
-          <!-- Instructions -->
           <div>
-            <h3 class="text-2xl font-semibold mb-6">Postup</h3>
-            <div class="space-y-4">
-              <div v-for="instruction in recipe.instructions"
-                  :key="instruction"
-                  class="flex gap-4 py-2">
-                <p class="text-gray-700">{{ instruction }}</p>
-              </div>
+            <h2 class="text-xl font-semibold mb-4">Postup</h2>
+            <ol class="space-y-4">
+              <li v-for="(instruction, index) in recipe.instructions" :key="index" class="flex gap-4">
+                <span class="text-gray-500 font-medium">{{ index + 1 }}.</span>
+                <span>{{ instruction }}</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-gray-200">
+          <div class="flex items-center justify-between text-gray-600">
+            <div class="flex items-center gap-4">
+              <span>Čas prípravy: {{ recipe.cookingTime }} minút</span>
+              <span>•</span>
+              <span>{{ recipe.servings }} porcií</span>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Back Button -->
-      <div class="mt-8">
-        <NuxtLink to="/" 
-           class="inline-flex items-center px-6 py-3 text-gray-700 hover:text-gray-900 gap-2 transition-colors duration-200">
-          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          Späť na recepty
-        </NuxtLink>
-      </div>
     </div>
-
-    <!-- Not Found State -->
-    <div v-else class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8 text-center">
-      <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <h2 class="text-2xl font-bold mb-2">Recept sa nenašiel</h2>
-      <p class="text-gray-600 mb-6">Ľutujeme, ale hľadaný recept neexistuje</p>
-      <NuxtLink to="/" 
-         class="inline-flex items-center px-6 py-3 text-blue-600 hover:text-blue-800 gap-2 font-medium transition-colors duration-200">
-        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
-        Späť na recepty
+    <div v-else class="text-center py-12">
+      <h2 class="text-2xl font-bold text-gray-800">Recept nebol nájdený</h2>
+      <NuxtLink to="/" class="text-blue-500 hover:text-blue-600 mt-4 inline-block">
+        Späť na zoznam receptov
       </NuxtLink>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import type { Recipe } from '~/types/recipe'
+
 const route = useRoute()
 const recipesStore = useRecipesStore()
-const recipe = computed(() => recipesStore.getRecipeById(route.params.id as string))
+const loading = ref(true)
+const generatingImage = ref(false)
 
-const getDifficultyColor = (difficulty?: string) => {
-  switch (difficulty) {
-    case 'easy':
-      return 'green'
-    case 'medium':
-      return 'yellow'
-    case 'hard':
-      return 'red'
-    default:
-      return 'gray'
+const recipe = computed(() => {
+  const id = route.params.id as string
+  return recipesStore.getRecipeById(id)
+})
+
+const generateImage = async () => {
+  if (!recipe.value) return
+  
+  try {
+    generatingImage.value = true
+    const { data, error } = await useFetch(`/api/recipe/${recipe.value.id}/image`)
+    
+    if (error.value) {
+      throw new Error(error.value.message)
+    }
+
+    if (!data.value?.data?.imageUrl) {
+      throw new Error('Nepodarilo sa vygenerovať obrázok')
+    }
+
+    // The store will be updated automatically through the API
+  } catch (error) {
+    console.error('Chyba pri generovaní obrázka:', error)
+  } finally {
+    generatingImage.value = false
   }
 }
+
+onMounted(() => {
+  loading.value = false
+})
 </script> 

@@ -2,7 +2,6 @@ import { defineEventHandler } from 'h3'
 import OpenAI from 'openai'
 
 export default defineEventHandler(async (event) => {
-  console.log('Načítavanie receptov z API')
 
   // Only handle GET requests
   if (event.method !== 'GET') {
@@ -16,7 +15,6 @@ export default defineEventHandler(async (event) => {
   // Need to await getQuery since it returns a promise
   const query = await getQuery(event)
   const { maxLength, difficulty, filters, cuisine } = query
-  console.log('query', query)
 
   try {
     // Call OpenAI API to generate recipes
@@ -44,12 +42,10 @@ export default defineEventHandler(async (event) => {
     }
 
     if (filters) {
-      console.log('filters', filters)
       prompt += `\nVšetky recepty by mali byť ${filters}`
     }
 
     if (cuisine) {
-      console.log('cuisine', cuisine)
       prompt += `\nVšetky recepty by mali byť ${cuisine}`
     }
 

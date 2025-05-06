@@ -15,6 +15,7 @@ export interface Recipe {
   cookingTime: number // in minutes
   difficulty: Difficulty
   servings: number
+  imageUrl?: string // URL to the generated food image
   createdAt: string
   updatedAt: string
 } 
