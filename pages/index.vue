@@ -1,12 +1,5 @@
 <template>
-  <div class="container mx-auto px-4">
-    
     <div class="py-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold">Vitajte v Receptovej aplikácii</h1>
-        <p class="text-gray-600">Prezrite si našu zbierku chutných receptov</p>
-      </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Cooking Time Slider -->
         <CardWrapper heading="Nastavte čas prípravy (minúty)">
@@ -73,7 +66,6 @@
         {{ loading ? 'Načítava sa...' : 'Získať recepty' }}
       </button>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -96,10 +88,16 @@ const filterOptions = [
 ]
 
 const cuisineOptions = [
+  { label: 'Slovenská', value: 'slovak' },
+  { label: 'Česká', value: 'czech' },
   { label: 'Čínska', value: 'chinese' },
   { label: 'Itálska', value: 'italian' },
   { label: 'Americká', value: 'american' },
-  { label: 'Japonská', value: 'japanese' }
+  { label: 'Japonská', value: 'japanese' },
+  { label: 'Indická', value: 'indian' },
+  { label: 'Mexická', value: 'mexican' },
+  { label: 'Thajská', value: 'thai' },
+  { label: 'Iné', value: 'other' }
 ]
 
 const selectedFilters = ref<string[]>([])
