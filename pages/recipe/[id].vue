@@ -110,7 +110,7 @@ const generateImage = async () => {
     generatingImage.value = true
     const { data, error } = await useFetch(`/api/recipe/${recipe.value.id}/image`, {
       query: {
-        name: recipe.value.title
+        name: recipe.value.imageName
       }
     })
     

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const id = event.context.params?.id
   const query = await getQuery(event)
-  const { name } = query
+  const { name = 'food' } = query
 
   if (!name) {
     return {
@@ -16,22 +16,25 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Use Unsplash API to get a random food image
-    const unsplashResponse = await fetch(
-      `https://api.unsplash.com/photos/random?query=${encodeURIComponent(name + ' food')}&orientation=landscape`,
+    const url = `https://api.pexels.com/v1/search?query=${name?.replace('_', ' ')}&per_page=1`
+    const imageResponse = await fetch(url,
       {
         headers: {
-          'Authorization': `Client-ID ${config.unsplashAccessKey}`
+          'Authorization': `${config.pexelsApiKey}`
         }
       }
     )
 
 
-    if (!unsplashResponse.ok) {
+    if (!imageResponse.ok) {
       throw new Error('Nepodarilo sa získať obrázok z Unsplash')
     }
 
-    const imageData = await unsplashResponse.json()
-    const imageUrl = imageData.urls.regular
+    const imageData = await imageResponse.json()
+    const imageUrl = imageData.photos[0].src.original
+
+
+
 
     if (!imageUrl) {
       throw new Error('Nepodarilo sa získať URL obrázka')

@@ -2,6 +2,7 @@ import { useRecipesStore } from '~/stores/recipes'
 import type { Difficulty } from '~/types/recipe'
 
 interface ApiRecipe {
+  [x: string]: any
   id: string
   title: string
   description: string
@@ -9,6 +10,7 @@ interface ApiRecipe {
   instructions: string | string[]
   preparationTime: string
   servings: number
+  imageName: string
   difficulty: string
 }
 
@@ -85,6 +87,7 @@ export const useRecipes = () => {
         instructions: normalizeInstructions(recipe.instructions),
         cookingTime: parseInt(recipe.preparationTime),
         difficulty: mapDifficulty(recipe.difficulty),
+        imageName: recipe.imageName,
         servings: recipe.servings
       }))
 

@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
 - instructions (array of strings, where each string is one step)
 - preparationTime (string representing minutes)
 - servings (number)
+- imageName (string, english name for the image to search for)
 - difficulty (string: easy, medium, or hard)`
 
     if (maxLength) {

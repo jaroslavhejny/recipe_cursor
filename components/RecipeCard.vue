@@ -51,6 +51,10 @@
           <dt class="font-medium text-gray-700">Porcie</dt>
           <dd class="mt-1 text-gray-600">{{ recipe.servings }}</dd>
         </div>
+        <div>
+          <dt class="font-medium text-gray-700">imageName</dt>
+          <dd class="mt-1 text-gray-600">{{ recipe.imageName }}</dd>
+        </div>
       </dl>
 
       <div class="flex justify-end mt-4">
