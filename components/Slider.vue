@@ -3,7 +3,7 @@
     <div class="relative w-full" ref="sliderContainer">
       <!-- Current value display -->
       <div class="text-center mb-6">
-        <span class="text-lg font-medium text-blue-600">{{ modelValue }}</span>
+        <span class="text-lg font-medium text-blue-600"></span>
       </div>
 
       <!-- Track -->
@@ -34,19 +34,12 @@
         @mousedown="startDragging($event)"
         @touchstart="startDragging($event)"
       >
-        <div 
-          v-if="isDragging"
-          class="absolute -top-10 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg shadow-md whitespace-nowrap"
-        >
-          {{ modelValue }}
-          <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-blue-600 rotate-45"></div>
-        </div>
       </div>
 
       <!-- Labels -->
       <div class="flex justify-between mt-4">
-        <span class="text-sm font-medium text-gray-700 z-20">{{ min }}</span>
-        <span class="text-sm font-medium text-gray-700 z-20">{{ max }}</span>
+        <span class="text-sm font-medium text-gray-700 z-20" style="transform: translateY(100%);">{{ min }}</span>
+        <span class="text-sm font-medium text-gray-700 z-20" style="transform: translateY(100%);">{{ max }}</span>
       </div>
     </div>
   </div>

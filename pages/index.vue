@@ -3,11 +3,11 @@
     <div class="py-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Cooking Time Slider -->
-        <CardWrapper heading="Nastavte čas prípravy (minúty)">
+        <CardWrapper :heading="`Maximálný čas prípravy: ${cookingTime} minút`">
           <Slider
             v-model="cookingTime"
-            :min="0"
-            :max="120"
+            :min="10"
+            :max="150"
             :step="5"
           />
         </CardWrapper>
